@@ -14,28 +14,28 @@ To write a python program to implement Breadth first Search.
 8.   Stop the program.
 ### Program:
 ```
-graph = {'5' : ['3','7'],'3' : ['2', '4'],'7' : ['8'],'2' : [],'4' : ['8'],'8':[]}
+graph = {'A' : ['B','C'],'B' : ['D', 'E'],'D':[],'E':[],'C' : ['F','G'],'F':[],'G':[]}
 visited = []
-queue = []     
+queue = []
 def bfs(visited, graph, node):
     visited.append(node)
     queue.append(node)
-    while queue:          
-        m = queue.pop(0) 
-        print (m) 
+    while queue:
+        m = queue.pop(0)
+        print (m)
         for neighbour in graph[m]:
             if neighbour not in visited:
                 visited.append(neighbour)
-            queue.append(neighbour)
+                queue.append(neighbour)
 
 # Driver Code
 print("Following is the Breadth-First Search")
-bfs(visited, graph, '5')
+bfs(visited, graph, 'A')
 ```
 
 ### Output:
 
-![image](https://github.com/KARPAGAKIRTHIKA/AI_Lab_2023-24/assets/103020162/6963e98f-eda4-4f19-bbd8-3e124a9b2e74)
+![image](https://github.com/user-attachments/assets/3f830d99-a8fd-48db-9c9b-98ae54083ae3)
 
 
 ### Result:
