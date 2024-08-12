@@ -1,5 +1,5 @@
 # Ex.No: 2  Implementation of Depth First Search
-### DATE: 17-02-2024                                                                         
+### DATE: 12-08-2024                                                                         
 ### REGISTER NUMBER : 212221220025
 ### AIM: 
 To write a python program to implement Depth first Search. 
@@ -13,14 +13,7 @@ To write a python program to implement Depth first Search.
 7. Stop the program.
 ### Program:
 ```
-graph = {
-  '5' : ['3','7'],
-  '3' : ['2', '4'],
-  '7' : ['8'],
-  '2' : [],
-  '4' : ['8'],
-  '8' : []
-}
+graph = {'A' : ['B','C'],'B' : ['D', 'E'],'D':[],'E':[],'C' : ['F','G'],'F':[],'G':[]}
 visited = set() # Set to keep track of visited nodes of graph.
 def dfs(visited, graph, node):  #function for dfs 
  if node not in visited:
@@ -30,13 +23,13 @@ def dfs(visited, graph, node):  #function for dfs
          dfs(visited, graph, neighbour)
 # Driver Code
 print("Following is the Depth-First Search")
-dfs(visited,graph,'5')
+dfs(visited,graph,'A')
 ```
 
 
 ### Output:
+![image](https://github.com/user-attachments/assets/1dbc55c8-ce7d-4572-80a6-9d2c5fae9955)
 
-![image](https://github.com/KARPAGAKIRTHIKA/AI_Lab_2023-24/assets/103020162/fa922d6e-3e66-4a7c-a5b9-da6d8ce8c808)
 
 ### Result:
 Thus the depth first search order was found sucessfully.
