@@ -1,67 +1,106 @@
-# Ex.No: 13 Learning – Use Supervised Learning  
+# Ex.No: 10 Learning – Use Supervised Learning  
 
-### DATE : 09-05-2024  
+### DATE : 10-10-2024  
 
 ### REGISTER NUMBER : 212221220025 
 
 ### AIM : 
-To write a program to train the classifier for Diabetes Prediction. 
+To write a program to train the classifier for Sepsis Prediction. 
+
 
 ###  Algorithm :
 1. Start the program.
 2. Import required Python libraries, including NumPy, Pandas, Google Colab, Gradio, and various scikit-learn modules.
-3. Mount Google Drive using Google Colab's 'drive.mount()' method to access the data file located in Google Drive.
-4. Install the Gradio library using 'pip install gradio'.
-5. Load the diabetes dataset from a CSV file ('diabetes.csv') using Pandas.
-6. Separate the target variable ('Outcome') from the input features and Scale the input features using the StandardScaler from scikit-learn.
-7. Create a multi-layer perceptron (MLP) classifier model using scikit-learn's 'MLPClassifier'.
-8. Train the model using the training data (x_train and y_train).
-9. Define a function named 'diabetes' that takes input parameters for various features and Use the trained machine learning model to predict the outcome based on the input features.
-10. Create a Gradio interface using 'gr.Interface' and Specify the function to be used to make predictions based on user inputs.
-11. Launch the Gradio web application, enabling sharing, to allow users to input their data and get predictions regarding diabetes risk.
-12. Stop the program.
+3.Load the sepsis dataset from a CSV file ('Paitients_Files_Train.csv') using Pandas.
+4. Separate the target variable ('Outcome') from the input features and Scale the input features using the StandardScaler from scikit-learn.
+5. Create a multi-layer perceptron (MLP) classifier model using scikit-learn's 'MLPClassifier'.
+6. Train the model using the training data (x_train and y_train).
+7. Define a function named 'sepsis' that takes input parameters for various features and Use the trained machine learning model to predict the outcome based on the input features.
+8. Predict the accuracy.
+9. Stop the program.
 
 ### Program:
 ```
-from google.colab import drive
-drive.mount('/content/gdrive')
-```
-```
-#import packages
-import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+from sklearn.preprocessing import LabelEncoder
+import pickle
+
 ```
 ```
-pip install gradio
+# Load your dataset
+data = pd.read_csv("Paitients_Files_Train.csv")
+
 ```
 ```
-pip install typing-extensions --upgrade
-```
-```
-!python --version
-```
-```
- pip install --upgrade typing
-```
-```
-import gradio as gr
-import pandas as pd
-```
-```
-cd /content/gdrive/MyDrive/demo/gradio_project-main
-```
-```
-#get the data
-data = pd.read_csv('diabetes.csv')
 data.head()
 ```
 ```
-print(data.columns)
+data
 ```
 ```
-x = data.drop(['Outcome'], axis=1)
-y = data['Outcome']
-print(x[:5])
+# Extracting the target variable
+y = data['Sepssis']
+
+# Drop the target variable from the dataset for the features
+X = data.drop(['Sepssis'], axis=1)
+
+# Using LabelEncoder for the 'ID' column
+label_encoder = LabelEncoder()
+X['ID'] = label_encoder.fit_transform(X['ID'])
+#X.drop('ID', axis=1, inplace=True)
+```
+```
+data.info()
+```
+```
+# Drop the original 'ID' column
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Define the parameter grid to search
+param_grid = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [None, 10, 20],
+    # Add more parameters to tune
+}
+```
+```
+# Initialize the Random Forest Classifier
+rf_model = RandomForestClassifier(random_state=42)
+
+# Perform Grid Search with Cross-Validation
+grid_search = GridSearchCV(estimator=rf_model, param_grid=param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+```
+```
+# Initialize the Random Forest Classifier
+rf_model = RandomForestClassifier(random_state=42)
+
+# Perform Grid Search with Cross-Validation
+grid_search = GridSearchCV(estimator=rf_model, param_grid=param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+```
+```
+# Get the best parameters and best estimator
+best_params = grid_search.best_params_
+best_model = grid_search.best_estimator_
+
+# Predict using the test set
+predictions = best_model.predict(X_test)
+
+```
+```
+# Model evaluation
+print("Best Parameters:", best_params)
+print("\nClassification Report:\n", classification_report(y_test, predictions))
+
+# Save the best model as a pickle file
+with open('best_model.pkl', 'wb') as file:
+    pickle.dump(best_model, file)
 ```
 ```
 #split data
@@ -76,38 +115,18 @@ scaler = StandardScaler()
 x_train_scaled = scaler.fit_transform(x_train)
 x_test_scaled = scaler.fit_transform(x_test)
 ```
-```
-#instatiate model
-from sklearn.neural_network import MLPClassifier
-model = MLPClassifier(max_iter=1000, alpha=1)
-model.fit(x_train, y_train)
-print("Model Accuracy on training set:", model.score(x_train, y_train))
-print("Model Accuracy on Test Set:", model.score(x_test, y_test))
-```
-```
-print(data.columns)
-```
-```
-#create a function for gradio
-def diabetes(Pregnancies, Glucose, Blood_Pressure, SkinThickness, Insulin, BMI,Diabetes_Pedigree, Age):
-    x = np.array([Pregnancies,Glucose,Blood_Pressure,SkinThickness,Insulin,BMI,Diabetes_Pedigree,Age])
-    prediction = model.predict(x.reshape(1, -1))
-    if(prediction==0):
-      return "NO"
-    else:
-      return "YES"
-```
-```
-outputs = gr.Textbox()
-app = gr.Interface(fn=diabetes, inputs=['number','number','number','number','number','number','number','number'], outputs=outputs,description="Detection of Diabeties")
-app.launch(share=True)
-```
+
 
 ### Output:
 
-![image](https://github.com/KARPAGAKIRTHIKA/AI_Lab_2023-24/assets/103020162/4a461d1e-4adc-47d8-9800-a57b4ad64529)
+![image](https://github.com/user-attachments/assets/8cb86d3f-5189-4408-9e42-77f2accb5bf7)
 
-![image](https://github.com/KARPAGAKIRTHIKA/AI_Lab_2023-24/assets/103020162/f25ba435-defa-4d9d-9dc4-f2aacd68e62d)
+![image](https://github.com/user-attachments/assets/70192c44-d223-4d42-8cc4-bac92b544c6d)
+
+![image](https://github.com/user-attachments/assets/d341a8e9-e472-4fd6-b69e-da60738da8d3)
+
+![image](https://github.com/user-attachments/assets/65791ba4-0ceb-472d-aa74-fefdcb980099)
+
 
 ### Result:
 Thus the system was trained successfully and the prediction was carried out.
