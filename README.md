@@ -5,7 +5,7 @@
 ### REGISTER NUMBER : 212221220025 
 
 ### AIM : 
-To write a program to train the classifier for Sepsis Prediction. 
+To write a program to train the classifier for Sepsis(life-threatening condition) Prediction using Random Forest classifier model. 
 
 
 ###  Algorithm :
@@ -13,7 +13,7 @@ To write a program to train the classifier for Sepsis Prediction.
 2. Import required Python libraries, including NumPy, Pandas, Google Colab, Gradio, and various scikit-learn modules.
 3.Load the sepsis dataset from a CSV file ('Paitients_Files_Train.csv') using Pandas.
 4. Separate the target variable ('Outcome') from the input features and Scale the input features using the StandardScaler from scikit-learn.
-5. Create a multi-layer perceptron (MLP) classifier model using scikit-learn's 'MLPClassifier'.
+5. Create a Random Forest classifier model using scikit-learn's 'sklearn.ensemble '.
 6. Train the model using the training data (x_train and y_train).
 7. Define a function named 'sepsis' that takes input parameters for various features and Use the trained machine learning model to predict the outcome based on the input features.
 8. Predict the accuracy.
